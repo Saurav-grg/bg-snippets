@@ -19,7 +19,8 @@ export function BackgroundCard({ pattern }: BackgroundCardProps) {
         `[data-pattern-id="${pattern.id}"]`
       );
       if (element) {
-        await navigator.clipboard.writeText(element.outerHTML);
+        // console.log(element.getHTML());
+        await navigator.clipboard.writeText(element.getHTML());
         setCopied(true);
         toast.success('Copied to clipboard!');
         setTimeout(() => setCopied(false), 2000);
@@ -30,11 +31,22 @@ export function BackgroundCard({ pattern }: BackgroundCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden">
-      <div data-pattern-id={pattern.id}>
-        <PatternComponent className="h-48 w-full transition-all duration-300" />
+    <Card>
+      <div data-pattern-id={pattern.id} className="w-full h-full">
+        <PatternComponent />
+        {/* className="h-48 w-full transition-all duration-300" */}
       </div>
-      <div className="p-4">
+      <div className="absolute top-2 right-2 bg-white/30 rounded-md">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={copyToClipboard}
+          className={copied ? 'text-green-500' : ''}
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
+      </div>
+      {/* <div className="p-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-semibold">{pattern.name}</h3>
@@ -42,16 +54,9 @@ export function BackgroundCard({ pattern }: BackgroundCardProps) {
               {pattern.description}
             </p>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={copyToClipboard}
-            className={copied ? 'text-green-500' : ''}
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
+          
         </div>
-      </div>
+      </div> */}
     </Card>
   );
 }
